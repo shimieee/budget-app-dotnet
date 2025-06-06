@@ -1,9 +1,14 @@
-
+using Microsoft.EntityFrameworkCore;
+using BudgetApp.Domain.Models; 
 //maps models to database tables
 public class BudgetDbContext : DbContext
 {
     public BudgetDbContext(DbContextOptions<BudgetDbContext> options)
-        : base(options) { }
+        : base(options)
+    {
+            
+         }
+
 
     // DbSets for each model
     public DbSet<User> Users => Set<User>();
@@ -17,4 +22,4 @@ public class BudgetDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 }
-
+// 

@@ -1,6 +1,26 @@
+using Microsoft.EntityFrameworkCore;
+using BudgetApp.Application.Interfaces;
+using BudgetApp.Infrastructure.Repositories;
+using DotNetEnv;
+
+Env.Load(); // loads .env variables into Environment
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var connectionString = $"Host={Environment.GetEnvironmentVariable("DB_HOST")};" +
+                       $"Port={Environment.GetEnvironmentVariable("DB_PORT")};" +
+                       $"Database={Environment.GetEnvironmentVariable("DB_NAME")};" +
+                       $"Username={Environment.GetEnvironmentVariable("DB_USER")};" +
+                       $"Password={Environment.GetEnvironmentVariable("DB_PASS")}";
+                       
+builder.Services.AddDbContext<BudgetDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
