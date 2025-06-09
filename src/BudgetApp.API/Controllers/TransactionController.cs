@@ -6,19 +6,19 @@ namespace BudgetApp.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class TransactionController : ControllerBase
 {
-    private readonly IUserRepository _userRepository;
+    private readonly ITransactionRepository _transactionRepository;
 
-    public UserController(IUserRepository userRepository)
+    public TransactionController(ITransactionRepository transactionRepository)
     {
-        _userRepository = userRepository;
+        _transactionRepository = transactionRepository;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllUsers()
+    public async Task<IActionResult> GetAllTransactions()
     {
-        var users = await _userRepository.GetAllAsync();
+        var transaction = await _transactionRepository.GetAllAsync();
         return Ok(users);
     }
 

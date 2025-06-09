@@ -43,4 +43,14 @@ public class TransactionRepository : ITransactionRepository
     {
         await _context.SaveChangesAsync();
     }
+
+    public Task UpdateAsync(Transaction transaction)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteAsync(Transaction transaction)
+    {
+        throw new NotImplementedException();
+    }
 }
