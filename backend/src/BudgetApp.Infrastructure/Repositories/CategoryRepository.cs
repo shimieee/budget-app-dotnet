@@ -3,6 +3,7 @@ using BudgetApp.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetApp.Infrastructure.Repositories;
+// used to manage categories in the budget application
 
 public class CategoryRepository : ICategoryRepository
 {
@@ -28,18 +29,17 @@ public class CategoryRepository : ICategoryRepository
         await _context.Categories.AddAsync(category);
     }
 
-    public void Update(Category category)
+    public async Task UpdateAsync(Category category)
     {
         _context.Categories.Update(category);
+        await Task.CompletedTask;
     }
 
-    public void Delete(Category category)
+    public async Task DeleteAsync(Category category)
     {
         _context.Categories.Remove(category);
+        await Task.CompletedTask;
     }
 
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
+
 }

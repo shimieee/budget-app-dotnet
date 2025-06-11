@@ -5,6 +5,7 @@ namespace BudgetApp.Infrastructure
 {
     public class BudgetDbContextFactory : IDesignTimeDbContextFactory<BudgetDbContext>
     {
+        // This factory is used to create instances of BudgetDbContext at design time, such as during migrations.
         public BudgetDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<BudgetDbContext>();
@@ -12,20 +13,13 @@ namespace BudgetApp.Infrastructure
             // Load environment variables
             DotNetEnv.Env.Load("../../.env");
 
-Console.WriteLine($"DB_HOST: {Environment.GetEnvironmentVariable("DB_HOST")}");
-Console.WriteLine($"DB_NAME: {Environment.GetEnvironmentVariable("DB_NAME")}");
-Console.WriteLine($"DB_USER: {Environment.GetEnvironmentVariable("DB_USER")}");
-Console.WriteLine($"DB_PASS: {Environment.GetEnvironmentVariable("DB_PASS")}");
-
-var connectionString = $"Host={Environment.GetEnvironmentVariable("DB_HOST")};" +
+            var connectionString = $"Host={Environment.GetEnvironmentVariable("DB_HOST")};" +
                        $"Port={Environment.GetEnvironmentVariable("DB_PORT") ?? "5432"};" +
                        $"Database={Environment.GetEnvironmentVariable("DB_NAME")};" +
                        $"Username={Environment.GetEnvironmentVariable("DB_USER")};" +
                        $"Password={Environment.GetEnvironmentVariable("DB_PASS")}";
-Console.WriteLine($"Connection String: {connectionString}");
-
+            // Use Npgsql for PostgreSQL
             optionsBuilder.UseNpgsql(connectionString);
-
             return new BudgetDbContext(optionsBuilder.Options);
         }
     }

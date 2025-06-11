@@ -1,4 +1,3 @@
-using BudgetApp.Application.Interfaces;
 using BudgetApp.Domain.Models;
 
 namespace BudgetApp.Application.Interfaces;

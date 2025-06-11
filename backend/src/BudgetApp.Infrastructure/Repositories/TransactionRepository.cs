@@ -12,45 +12,33 @@ public class TransactionRepository : ITransactionRepository
         _context = context;
     }
 
+// get all transactions for a specific user
     public async Task<IEnumerable<Transaction>> GetByUserIdAsync(int userId)
     {
         return await _context.Transactions
             .Where(t => t.UserId == userId)
             .ToListAsync();
     }
-
+// get a specific transaction by id
     public async Task<Transaction?> GetByIdAsync(int id)
     {
         return await _context.Transactions.FindAsync(id);
     }
-
+// add a new transaction
     public async Task AddAsync(Transaction transaction)
     {
         await _context.Transactions.AddAsync(transaction);
     }
-
-    public void Update(Transaction transaction)
-    {
-        _context.Transactions.Update(transaction);
-    }
-
-    public void Delete(Transaction transaction)
-    {
-        _context.Transactions.Remove(transaction);
-    }
-
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
-
+// update an existing transaction
     public Task UpdateAsync(Transaction transaction)
     {
-        throw new NotImplementedException();
+        _context.Transactions.Update(transaction);
+        return Task.CompletedTask;        
     }
-
+// delete a transaction
     public Task DeleteAsync(Transaction transaction)
     {
-        throw new NotImplementedException();
+        _context.Transactions.Remove(transaction);
+        return Task.CompletedTask;
     }
 }
