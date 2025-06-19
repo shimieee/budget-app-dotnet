@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using BudgetApp.Application.Interfaces;
 using BudgetApp.Domain.Models;
-using System.Drawing;
 
 namespace BudgetApp.API.Controllers;
 

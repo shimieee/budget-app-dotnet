@@ -1,5 +1,5 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using BudgetApp.Application.Interfaces;
 using BudgetApp.Domain.Models;
 
 namespace BudgetApp.API.Controllers;
@@ -8,55 +8,28 @@ namespace BudgetApp.API.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IUserRepository _userRepository;
+    private readonly UserManager<AppUser> _userManager;
 
-    public UserController(IUserRepository userRepository)
+    public UserController(UserManager<AppUser> userManager)
     {
-        _userRepository = userRepository;
+        _userManager = userManager;
     }
 
+    // GET: api/user
     [HttpGet]
-    public async Task<IActionResult> GetAllUsers()
+    public IActionResult GetAllUsers()
     {
-        var users = await _userRepository.GetAllAsync();
+        var users = _userManager.Users.Select(u => new { u.Id, u.UserName, u.Email }).ToList();
         return Ok(users);
     }
 
+    // GET: api/user/{id}
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserById(int id)
+    public async Task<IActionResult> GetUserById(string id)
     {
-        var user = await _userRepository.GetByIdAsync(id);
-        if (user == null) return NotFound();
-        return Ok(user);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateUser([FromBody] User user)
-    {
-        await _userRepository.AddAsync(user);
-        return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(int id, [FromBody] User updatedUser)
-    {
-        var user = await _userRepository.GetByIdAsync(id);
+        var user = await _userManager.FindByIdAsync(id);
         if (user == null) return NotFound();
 
-        user.Username = updatedUser.Username;
-        user.Email = updatedUser.Email;
-
-        await _userRepository.UpdateAsync(user);
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUser(int id)
-    {
-        var user = await _userRepository.GetByIdAsync(id);
-        if (user == null) return NotFound();
-
-        await _userRepository.DeleteAsync(user);
-        return NoContent();
+        return Ok(new { user.Id, user.UserName, user.Email });
     }
 }
