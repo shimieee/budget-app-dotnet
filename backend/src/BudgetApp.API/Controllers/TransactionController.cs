@@ -37,16 +37,25 @@ public class TransactionController : ControllerBase
         return transaction == null ? NotFound() : Ok(transaction);
     }
 
-    [HttpPost]
+
+[HttpPost]
 public async Task<IActionResult> Create([FromBody] Transaction transaction)
 {
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (string.IsNullOrEmpty(userId))
+        return Unauthorized();
 
+    // Assign UserId here
+    transaction.UserId = userId;
+    transaction.Date = DateTime.SpecifyKind(transaction.Date, DateTimeKind.Utc);
+
+    // Validate Category exists (optional but recommended)
     var category = await _categoryRepository.GetByIdAsync(transaction.CategoryId);
-    if (category == null) return BadRequest("Invalid CategoryId.");
+    if (category == null)
+        return BadRequest("Invalid CategoryId.");
 
-    transaction.UserId = userId!;
     await _transactionRepository.AddAsync(transaction);
+    await _transactionRepository.SaveChangesAsync(); // ensure saving changes
 
     return CreatedAtAction(nameof(GetTransaction), new { id = transaction.Id }, transaction);
 }

@@ -36,25 +36,29 @@ public class CategoryController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> AddCategory([FromBody] Category category)
-    {
-        if (string.IsNullOrWhiteSpace(category.Name))
-            return BadRequest("Category name is required.");
+{
+    if (string.IsNullOrWhiteSpace(category.Name))
+        return BadRequest("Category name is required.");
 
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        category.UserId = userId!;
-        await _categoryRepository.AddAsync(category);
-        return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category);
-    }
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    category.UserId = userId!;
+    category.CreatedDate = DateTime.UtcNow;
+
+    await _categoryRepository.AddAsync(category);
+    return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category);
+}
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category updatedCategory)
     {
-        var category = await _categoryRepository.GetByIdAsync(id);
-        if (category == null) return NotFound();
+    var category = await _categoryRepository.GetByIdAsync(id);
+    if (category == null) return NotFound();
 
-        category.Name = updatedCategory.Name;
-        await _categoryRepository.UpdateAsync(category);
-        return NoContent();
+    category.Name = updatedCategory.Name;
+    category.BudgetAmount = updatedCategory.BudgetAmount;
+
+    await _categoryRepository.UpdateAsync(category);
+    return NoContent();
     }
 
     [HttpDelete("{id}")]
