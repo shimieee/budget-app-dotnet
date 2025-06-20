@@ -2,29 +2,31 @@ using Microsoft.EntityFrameworkCore;
 using BudgetApp.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-//maps models to database tables
+// maps models to database tables
 public class BudgetDbContext : IdentityDbContext<AppUser>
 {
+    // Constructor to pass options to the base class
     public BudgetDbContext(DbContextOptions<BudgetDbContext> options)
         : base(options) { }
 
+    // DbSets for each model
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Category> Categories => Set<Category>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    base.OnModelCreating(modelBuilder);
+    {
+        base.OnModelCreating(modelBuilder);
 
-    modelBuilder.Entity<Category>()
-        .HasOne(c => c.User)
-        .WithMany()
-        .HasForeignKey(c => c.UserId)
-        .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<Category>()
+            .HasOne(c => c.User)
+            .WithMany()
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-    modelBuilder.Entity<Transaction>()
-        .HasOne(t => t.User)
-        .WithMany()
-        .HasForeignKey(t => t.UserId)
-        .OnDelete(DeleteBehavior.Cascade);
-}
+        modelBuilder.Entity<Transaction>()
+            .HasOne(t => t.User)
+            .WithMany()
+            .HasForeignKey(t => t.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }

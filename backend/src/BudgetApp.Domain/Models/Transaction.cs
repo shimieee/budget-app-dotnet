@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace BudgetApp.Domain.Models;
 
 public class Transaction
@@ -7,9 +9,14 @@ public class Transaction
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
 
-    public string UserId { get; set; } = default!;  // Change to string
-    public AppUser User { get; set; } = default!;
-
     public int CategoryId { get; set; }
-    public Category Category { get; set; } = default!;
+
+   [JsonIgnore]
+    public string? UserId { get; set; }
+
+    [JsonIgnore]
+    public AppUser? User { get; set; }
+
+    [JsonIgnore]
+    public Category? Category { get; set; }
 }

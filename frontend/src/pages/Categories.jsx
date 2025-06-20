@@ -32,10 +32,11 @@ const Categories = () => {
   const handleAddCategory = async (e) => {
     e.preventDefault();
     if (newCategoryName.trim() === "" || newCategoryBudget.trim() === "") return;
+    setError("");
     try {
       const newCategory = {
         name: newCategoryName,
-        budget: parseFloat(newCategoryBudget),
+        budgetAmount: parseFloat(newCategoryBudget), // Backend property
       };
       const created = await createCategory(newCategory);
       setCategories([...categories, created]);
@@ -124,11 +125,11 @@ const Categories = () => {
                     {categories.map((category) => (
                       <tr key={category.id} className="hover:bg-[#fcfaf7] transition-colors duration-150">
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-[#425951]">{category.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#667538]">${category.budget?.toFixed(2) ?? "0.00"}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#667538]">${category.budgetAmount?.toFixed(2) ?? "0.00"}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-[#b88b5a]">${category.spent?.toFixed(2) ?? "0.00"}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <span className={`${(category.budget - category.spent) < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                            ${(category.budget - category.spent)?.toFixed(2) ?? "0.00"}
+                          <span className={`${(category.budgetAmount - (category.spent ?? 0)) < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                            ${(category.budgetAmount - (category.spent ?? 0))?.toFixed(2) ?? "0.00"}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -152,4 +153,4 @@ const Categories = () => {
   );
 };
 
-export default Categories; 
+export default Categories;

@@ -1,21 +1,11 @@
-import api from './index';
+import axios from './index';
 
-// GET a user by ID
-export const fetchUser = (id) =>
-  api.get(`/users/${id}`);
+export const fetchCurrentUser = async () => {
+  const response = await axios.get('/user/me');
+  return response.data;
+};
 
-// GET all users (optional)
-export const fetchAllUsers = () =>
-  api.get('/users');
-
-// CREATE a user (optional)
-export const addUser = (user) =>
-  api.post('/users', user);
-
-// UPDATE user (optional)
-export const updateUser = (id, user) =>
-  api.put(`/users/${id}`, user);
-
-// DELETE user (optional)
-export const deleteUser = (id) =>
-  api.delete(`/users/${id}`);
+export const updateCurrentUser = async (userData) => {
+  const response = await axios.put('/user/me', userData);
+  return response.data;
+};

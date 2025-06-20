@@ -3,6 +3,7 @@ import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { loginUser } from "../api/auth"; // API call to login user
 import { useNavigate } from "react-router-dom"; // for navigation after login
+import Header from "../components/Header";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -41,6 +42,8 @@ const Login = () => {
   };
 
   return (
+    <>
+    <Header />
     <div className="min-h-screen bg-[#F4EBD0] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-lg shadow-xl p-8">
@@ -117,6 +120,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

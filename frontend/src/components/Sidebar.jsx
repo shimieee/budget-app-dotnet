@@ -13,6 +13,7 @@ import {
   TagIcon,
   ArrowRightOnRectangleIcon,
   CurrencyDollarIcon,
+  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 
 const Sidebar = () => {
@@ -40,6 +41,11 @@ const Sidebar = () => {
       name: "Reports",
       icon: <ChartBarIcon className="h-5 w-5" />,
       path: "/reports"
+    },
+    {
+      name: "Profile",
+      icon: <UserCircleIcon className="h-5 w-5" />,
+      path: "/profile"
     }
   ];
 

@@ -7,13 +7,16 @@ namespace BudgetApp.Infrastructure.Repositories;
 
 public class CategoryRepository : ICategoryRepository
 {
+    // Repository for managing categories in the budget application
     private readonly BudgetDbContext _context;
 
+    // Constructor to inject the database context
     public CategoryRepository(BudgetDbContext context)
     {
         _context = context;
     }
 
+    // Methods to interact with the database for category operations
     public async Task<IEnumerable<Category>> GetByUserIdAsync(string userId)
     {
         return await _context.Categories
@@ -33,19 +36,19 @@ public class CategoryRepository : ICategoryRepository
     public async Task AddAsync(Category category)
     {
         await _context.Categories.AddAsync(category);
+        await _context.SaveChangesAsync(); 
+
     }
 
     public async Task UpdateAsync(Category category)
     {
         _context.Categories.Update(category);
-        await Task.CompletedTask;
+        await _context.SaveChangesAsync(); 
     }
 
     public async Task DeleteAsync(Category category)
     {
         _context.Categories.Remove(category);
-        await Task.CompletedTask;
+        await _context.SaveChangesAsync(); // Save changes after delete
     }
-
-
 }

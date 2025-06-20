@@ -4,8 +4,7 @@ namespace BudgetApp.Domain.Models
 {
     public class AppUser : IdentityUser
     {
-        // Additional properties can be added here if needed
-        // For example, you might want to add a full name or profile picture URL
+        // Additional properties for the user
         public required string FullName { get; set; }
         public string? ProfilePictureUrl { get; set; }
         

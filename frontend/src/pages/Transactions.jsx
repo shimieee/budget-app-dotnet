@@ -3,6 +3,7 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { getTransactions, createTransaction } from "../api/transactions";
 import { fetchCategories } from "../api/categories";
+import Select from "react-select";
 
 const Transactions = () => {
   const [transactionsData, setTransactionsData] = useState([]);
@@ -10,7 +11,7 @@ const Transactions = () => {
   const [newDate, setNewDate] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newAmount, setNewAmount] = useState("");
-  const [selectedCategoryId, setSelectedCategoryId] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -24,7 +25,7 @@ const Transactions = () => {
         ]);
         setTransactionsData(txRes);
         setCategories(catRes);
-        setSelectedCategoryId(catRes[0]?.id || "");
+        setSelectedCategory(catRes[0] ? { value: catRes[0].id, label: catRes[0].name } : null);
       } catch (err) {
         setError("Failed to load data");
       } finally {
@@ -37,14 +38,14 @@ const Transactions = () => {
   const handleAddTransaction = async (e) => {
     e.preventDefault();
     setError("");
-    if (!newTitle.trim() || !newAmount || !newDate || !selectedCategoryId) return;
+    if (!newTitle.trim() || !newAmount || !newDate || !selectedCategory) return;
     const parsedAmount = parseFloat(newAmount);
     if (isNaN(parsedAmount)) return;
     const newTransaction = {
       title: newTitle.trim(),
       amount: parsedAmount,
       date: newDate,
-      categoryId: selectedCategoryId,
+      categoryId: selectedCategory.value,
     };
     try {
       const created = await createTransaction(newTransaction);
@@ -52,11 +53,14 @@ const Transactions = () => {
       setNewDate("");
       setNewTitle("");
       setNewAmount("");
-      setSelectedCategoryId(categories[0]?.id || "");
+      setSelectedCategory(categories[0] ? { value: categories[0].id, label: categories[0].name } : null);
     } catch (err) {
       setError("Failed to add transaction");
     }
   };
+
+  // Prepare options for react-select
+  const categoryOptions = categories.map((cat) => ({ value: cat.id, label: cat.name }));
 
   return (
     <>
@@ -103,16 +107,39 @@ const Transactions = () => {
               </div>
               <div>
                 <label htmlFor="transactionCategory" className="block text-sm font-medium text-[#667538] mb-1">Category</label>
-                <select
-                  id="transactionCategory"
-                  value={selectedCategoryId}
-                  onChange={(e) => setSelectedCategoryId(e.target.value)}
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#b7d3a8] bg-[#f9f5ed] text-[#425951]"
-                >
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                  ))}
-                </select>
+                <Select
+                  inputId="transactionCategory"
+                  value={selectedCategory}
+                  onChange={setSelectedCategory}
+                  options={categoryOptions}
+                  classNamePrefix="react-select"
+                  className="w-full"
+                  styles={{
+                    control: (base, state) => ({
+                      ...base,
+                      backgroundColor: '#f9f5ed',
+                      borderColor: '#e9e5d6',
+                      minHeight: '40px',
+                      color: '#425951',
+                      boxShadow: 'none',
+                      outline: 'none',
+                    }),
+                    singleValue: (base) => ({ ...base, color: '#425951' }),
+                    option: (base, state) => ({
+                      ...base,
+                      backgroundColor: state.isSelected ? '#e9e5d6' : state.isFocused ? '#e9e5d6' : '#fff',
+                      color: '#425951',
+                    }),
+                  }}
+                  theme={theme => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary25: '#e9e5d6', // focused option
+                      primary: '#e9e5d6',   // selected option and border
+                    },
+                  })}
+                />
               </div>
               <div className="md:col-span-2 lg:col-span-3 flex justify-end items-end">
                 <button

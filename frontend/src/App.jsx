@@ -10,6 +10,7 @@ import NotFound from './pages/NotFound';
 import LoadingScreen from './components/LoadingScreen';
 import Footer from './components/Footer';
 import About from './pages/About';
+import Profile from './pages/Profile';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/transactions" element={<Transactions />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/about" element={<About/>}/>
       </Routes>

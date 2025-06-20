@@ -1,6 +1,5 @@
 using BudgetApp.Domain.Models;
 
-
 namespace BudgetApp.Application.Interfaces;
 
 public interface ICategoryRepository

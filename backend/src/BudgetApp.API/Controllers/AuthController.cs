@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using BudgetApp.Domain.Models;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,11 +8,12 @@ using System.Security.Claims;
 
 namespace BudgetApp.API.Controllers;
 
-
+// API controller for authentication
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
+    // UserManager to handle user operations
     private readonly UserManager<AppUser> _userManager;
     private readonly IConfiguration _configuration;
 
@@ -23,41 +23,48 @@ public class AuthController : ControllerBase
         _configuration = configuration;
     }
 
-[HttpPost("register")]
-public async Task<IActionResult> Register(RegisterRequest request)
-{
-    // Validate the request
-    var existingUser = await _userManager.FindByEmailAsync(request.Email);
-    // Check if the email is already in use
-    if (existingUser != null)
+    // Endpoint for user registration
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(RegisterRequest request)
+    {
+        // Validate the request
+        var existingUser = await _userManager.FindByEmailAsync(request.Email);
+
+        // Check if the email is already in use
+        if (existingUser != null)
         {
             return BadRequest("Email already in use.");
         }
-    // Check if the username is already in use
-    var user = new AppUser
-    {
-        UserName = request.Username,
-        Email = request.Email,
-        FullName = request.FullName // Set full name here
-    };
-    // Create the user with the provided password
-    var result = await _userManager.CreateAsync(user, request.Password);
 
-    // If the user creation failed, return the errors
-    if (!result.Succeeded)
-    {
-        var errors = result.Errors.Select(e => e.Description);
-        return BadRequest(new { Errors = errors });
+        // Check if the username is already in use
+        var user = new AppUser
+        {
+            UserName = request.Username,
+            Email = request.Email,
+            FullName = request.FullName
+        };
+
+        // Create the user with the provided password
+        var result = await _userManager.CreateAsync(user, request.Password);
+
+        // If the user creation failed, return the errors
+        if (!result.Succeeded)
+        {
+            var errors = result.Errors.Select(e => e.Description);
+            return BadRequest(new { Errors = errors });
+        }
+        return Ok("User registered successfully.");
+    
     }
-    return Ok("User registered successfully.");
-}
 
+    // Endpoint for user login
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
         
         // Find user by email
         var user = await _userManager.FindByEmailAsync(request.Email);
+
         // If user is not found, return unauthorized
         if (user == null)
         {
@@ -74,6 +81,7 @@ public async Task<IActionResult> Register(RegisterRequest request)
         // Generate JWT token
         var token = GenerateJwtToken(user);
 
+        // Return the token
         return Ok(new { Token = token });
     }
 
@@ -87,6 +95,7 @@ public async Task<IActionResult> Register(RegisterRequest request)
         new Claim(JwtRegisteredClaimNames.Email, user.Email!),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
+
         // Get the JWT key from configuration
         var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key is missing in configuration.");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
@@ -101,9 +110,9 @@ public async Task<IActionResult> Register(RegisterRequest request)
         claims: claims,
         expires: DateTime.UtcNow.AddHours(1),
         signingCredentials: creds);
+        
         // Return the token as a string
-
-    return new JwtSecurityTokenHandler().WriteToken(token);
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
 

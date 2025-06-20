@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BudgetApp.Infrastructure.Migrations
 {
     [DbContext(typeof(BudgetDbContext))]
-    partial class BudgetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250620075955_AddBudgetAmountAndCreatedDateToCategory")]
+    partial class AddBudgetAmountAndCreatedDateToCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,6 +117,7 @@ namespace BudgetApp.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -145,6 +149,7 @@ namespace BudgetApp.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -293,7 +298,8 @@ namespace BudgetApp.Infrastructure.Migrations
                     b.HasOne("BudgetApp.Domain.Models.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -309,7 +315,8 @@ namespace BudgetApp.Infrastructure.Migrations
                     b.HasOne("BudgetApp.Domain.Models.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 

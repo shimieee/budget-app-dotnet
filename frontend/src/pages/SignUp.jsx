@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo from "../assets/logo.png"; // Update path if needed
 import { useNavigate } from "react-router-dom"; // for navigation after sign up
 import { registerUser } from "../api/auth";
+import Header from "../components/Header";
 
 
 const SignUp = () => {
@@ -38,9 +39,11 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4EBD0] flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        <div className="bg-white rounded-lg shadow-xl p-6">
+    <>
+    <Header/>
+    <div className="min-h-screen bg-[#F4EBD0] flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-lg">
+        <div className="bg-white rounded-xl shadow-xl p-8">
           <div className="flex flex-col items-center">
             <img src={logo} alt="Budget Bud" className="h-16 w-auto mb-6" />
             <h1 className="text-2xl font-bold text-[#425951] mb-2">Create Account</h1>
@@ -55,7 +58,7 @@ const SignUp = () => {
               <input
                 id="fullName"
                 type="text"
-                className="w-full px-4 py-3 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
+                className="w-full px-4 py-2 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
                 placeholder="Enter your full name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
@@ -68,7 +71,7 @@ const SignUp = () => {
               <input
                 id="username"
                 type="text"
-                className="w-full px-4 py-3 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
+                className="w-full px-4 py-2 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
                 placeholder="Enter your username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -81,7 +84,7 @@ const SignUp = () => {
               <input
                 id="email"
                 type="email"
-                className="w-full px-4 py-3 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
+                className="w-full px-4 py-2 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -95,7 +98,7 @@ const SignUp = () => {
               <input
                 id="password"
                 type="password"
-                className="w-full px-4 py-3 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
+                className="w-full px-4 py-2 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -109,7 +112,7 @@ const SignUp = () => {
               <input
                 id="confirmPassword"
                 type="password"
-                className="w-full px-4 py-3 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
+                className="w-full px-4 py-2 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
                 placeholder="Confirm your password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -144,6 +147,8 @@ const SignUp = () => {
         </div>
       </div>
     </div>
+    </>
+
   );
 };
 

@@ -2,7 +2,7 @@ import React from "react";
 import { CloudArrowUpIcon, LockClosedIcon, ServerIcon, BookOpenIcon } from "@heroicons/react/20/solid";
 import Header from "../components/Header"; // Import Header
 import { Link } from "react-router-dom";
-// import Screenshot from "../assets/screenshot.png"; // Uncomment and use your actual screenshot if available
+import screenshot from "../assets/screenshot.png";
 
 const LandingPage = () => (
     <>
@@ -77,10 +77,29 @@ const LandingPage = () => (
       </div>
 
       {/* Right Content - Screenshot */}
-      <div className="lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-visible lg:-mr-48 flex items-center justify-end">
-        <div className="relative rounded-l-lg overflow-hidden bg-[#b7d3a8] border-l border-t border-b border-[#667538] w-[140%] shadow-xl flex items-center justify-center h-[400px]">
-          {/* Replace the div below with your actual screenshot if available */}
-          <span className="text-2xl text-[#425951] font-bold">Screenshot here</span>
+      <div className="lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-visible flex items-center justify-end">
+        {/* Main screenshot container */}
+        <div className="relative flex items-center justify-end w-full" style={{ marginTop: '64px', marginLeft: '64px' }}>
+          <div
+            className="relative z-20 bg-white rounded-3xl shadow-2xl"
+            style={{
+              borderLeft: "20px solid #667538",
+              borderBottom: "20px solid #667538",
+              borderTop: "none",
+              borderRight: "none",
+              overflow: "hidden",
+              display: "inline-block",
+              maxWidth: "none",
+              marginRight: "-400px"
+            }}
+          >
+            <img
+              src={screenshot}
+              alt="App Screenshot"
+              className="w-[1600px] h-auto object-cover"
+              draggable={false}
+            />
+          </div>
         </div>
       </div>
     </div>
