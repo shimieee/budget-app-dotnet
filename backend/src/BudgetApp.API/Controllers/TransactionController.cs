@@ -6,9 +6,9 @@ using System.Security.Claims;
 
 namespace BudgetApp.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
 public class TransactionController : ControllerBase
 {
     private readonly ITransactionRepository _transactionRepository;

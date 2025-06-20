@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 
 const Transactions = () => {
   const [transactionsData, setTransactionsData] = useState([
@@ -49,11 +50,13 @@ const Transactions = () => {
   };
 
   return (
+    <>
+    <Header />
     <div className="flex min-h-screen bg-[#F4EBD0]">
       <Sidebar />
 
-      <div className="flex-1 p-8 sm:p-12 lg:p-16 overflow-y-auto">
-        <h1 className="text-4xl sm:text-5xl font-bold text-[#425951] mb-10 text-center">All Transactions</h1>
+      <div className="flex-1 p-8 sm:p-10 lg:p-12 overflow-y-auto">
+      <h1 className="text-3xl sm:text-4xl font-bold text-[#425951] mb-8">All Transactions</h1>
         
         <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-sm p-6 mb-10 border border-[#d9cbb2]">
           <h2 className="text-2xl font-semibold text-[#425951] mb-4">Add New Transaction</h2>
@@ -156,6 +159,7 @@ const Transactions = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

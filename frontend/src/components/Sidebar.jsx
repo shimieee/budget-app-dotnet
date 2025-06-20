@@ -1,27 +1,95 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Card,
+  List,
+  ListItem,
+  ListItemPrefix,
+  Typography,
+} from "@material-tailwind/react";
+import {
+  HomeIcon,
+  ChartBarIcon,
+  TagIcon,
+  ArrowRightOnRectangleIcon,
+  CurrencyDollarIcon,
+} from "@heroicons/react/24/outline";
 
 const Sidebar = () => {
+  const location = useLocation();
+
+  const LIST_ITEM_STYLES = "select-none transition-colors duration-300 hover:bg-[#F4EBD0] focus:bg-[#F4EBD0] active:bg-[#F4EBD0] hover:text-[#425951] focus:text-[#425951] active:text-[#425951]";
+
+  const menuItems = [
+    {
+      name: "Dashboard",
+      icon: <HomeIcon className="h-5 w-5" />,
+      path: "/dashboard"
+    },
+    {
+      name: "Categories",
+      icon: <TagIcon className="h-5 w-5" />,
+      path: "/categories"
+    },
+    {
+      name: "Transactions",
+      icon: <CurrencyDollarIcon className="h-5 w-5" />,
+      path: "/transactions"
+    },
+    {
+      name: "Reports",
+      icon: <ChartBarIcon className="h-5 w-5" />,
+      path: "/reports"
+    }
+  ];
+
   return (
-    <aside className="w-64 bg-[#e9e5d6] p-6 flex flex-col justify-between border-r border-[#d9cbb2]">
-      <div>
-        <h2 className="text-2xl font-bold text-[#425951] mb-8">BudgetWise</h2>
-        <nav className="space-y-2">
-          <Link to="/dashboard" className="flex items-center text-[#667538] hover:text-[#425951] font-medium transition duration-200 p-2 rounded-md hover:bg-[#d9cbb2]">
-            <span className="mr-3 text-lg">📊</span> Dashboard
-          </Link>
-          <Link to="/transactions" className="flex items-center text-[#667538] hover:text-[#425951] font-medium transition duration-200 p-2 rounded-md hover:bg-[#d9cbb2]">
-            <span className="mr-3 text-lg">💸</span> Transactions
-          </Link>
-          <Link to="/categories" className="flex items-center text-[#667538] hover:text-[#425951] font-medium transition duration-200 p-2 rounded-md hover:bg-[#d9cbb2]">
-            <span className="mr-3 text-lg">🏷️</span> Categories
-          </Link>
-        </nav>
+    <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] shadow-xl bg-[#667538] mt-10 ml-8">
+      <div className="flex flex-col h-full">
+        {/* Main Navigation */}
+        <div className="flex-1 p-4">
+          <List className="space-y-1">
+            {menuItems.map((item) => (
+              <Link to={item.path} key={item.name}>
+                <ListItem
+                  selected={location.pathname === item.path}
+                  data-selected={location.pathname === item.path}
+                  className={`${LIST_ITEM_STYLES} ${location.pathname === item.path ? 'bg-[#F4EBD0] text-[#425951]' : 'text-[#F4EBD0]'} px-4 py-3 rounded-lg`}
+                >
+                  <ListItemPrefix className="mr-4">
+                    {item.icon}
+                  </ListItemPrefix>
+                  <Typography className="mr-auto font-normal">
+                    {item.name}
+                  </Typography>
+                </ListItem>
+              </Link>
+            ))}
+          </List>
+        </div>
+
+        {/* Footer */}
+        <div className="p-4">
+          <List>
+            <Link to="/login">
+              <ListItem className={`${LIST_ITEM_STYLES} text-[#F4EBD0] px-4 py-3 rounded-lg`}>
+                <ListItemPrefix className="mr-4">
+                  <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                <Typography className="mr-auto font-normal">
+                  Sign Out
+                </Typography>
+              </ListItem>
+            </Link>
+          </List>
+          <div className="mt-4">
+            <Typography variant="small" className="font-medium text-[#F4EBD0] text-center">
+              BudgetWise v1.0.0
+            </Typography>
+          </div>
+        </div>
       </div>
-      <div className="text-sm text-[#b88b5a]">
-        <p>© 2023 BudgetWise</p>
-      </div>
-    </aside>
+    </Card>
   );
 };
 

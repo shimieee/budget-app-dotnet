@@ -1,65 +1,128 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 
 const Categories = () => {
-  const [categoriesData, setCategoriesData] = useState([
-    { name: "Food", totalSpent: 105.70 },
-    { name: "Transport", totalSpent: 45.00 },
-    { name: "Rent", totalSpent: 1200.00 },
-    { name: "Utilities", totalSpent: 80.00 },
-    { name: "Entertainment", totalSpent: 175.00 },
-    { name: "Shopping", totalSpent: 200.00 },
-    { name: "Savings", totalSpent: 500.00 },
-    { name: "Health", totalSpent: 60.00 },
+  const [categories, setCategories] = useState([
+    { id: 1, name: "Food", budget: 500, spent: 300 },
+    { id: 2, name: "Transport", budget: 200, spent: 150 },
+    { id: 3, name: "Housing", budget: 1200, spent: 1100 },
+    { id: 4, name: "Utilities", budget: 150, spent: 100 },
+    { id: 5, name: "Entertainment", budget: 300, spent: 250 },
   ]);
-
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [newCategoryBudget, setNewCategoryBudget] = useState("");
 
   const handleAddCategory = (e) => {
     e.preventDefault();
-    if (newCategoryName.trim() === "") return;
+    if (newCategoryName.trim() === "" || newCategoryBudget.trim() === "") return;
 
-    const newCategory = { name: newCategoryName.trim(), totalSpent: 0 };
-    setCategoriesData([...categoriesData, newCategory]);
+    const newCategory = {
+      id: categories.length + 1,
+      name: newCategoryName,
+      budget: parseFloat(newCategoryBudget),
+      spent: 0, // New categories start with 0 spent
+    };
+    setCategories([...categories, newCategory]);
     setNewCategoryName("");
+    setNewCategoryBudget("");
+  };
+
+  const handleDeleteCategory = (id) => {
+    setCategories(categories.filter((category) => category.id !== id));
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F4EBD0]">
-      <Sidebar />
+    <>
+      <Header />
+      <div className="flex min-h-screen bg-[#F4EBD0]">
+        <Sidebar />
+        <main className="flex-1 p-8 sm:p-10 lg:p-12 overflow-y-auto">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#425951] mb-8">Categories</h1>
 
-      <div className="flex-1 p-8 sm:p-12 lg:p-16 overflow-y-auto">
-        <h1 className="text-4xl sm:text-5xl font-bold text-[#425951] mb-10 text-center">Your Categories</h1>
-        
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-sm p-6 mb-10 border border-[#d9cbb2]">
-          <h2 className="text-2xl font-semibold text-[#425951] mb-4">Add New Category</h2>
-          <form onSubmit={handleAddCategory} className="flex gap-4">
-            <input
-              type="text"
-              placeholder="Category Name"
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-              className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#b7d3a8] bg-[#f9f5ed] text-[#425951]"
-            />
-            <button
-              type="submit"
-              className="bg-[#667538] text-white px-6 py-2 rounded-md hover:bg-[#425951] transition"
-            >
-              Add
-            </button>
-          </form>
-        </div>
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-8 border border-[#d9cbb2]">
+            <h2 className="text-2xl font-semibold text-[#425951] mb-4">Add New Category</h2>
+            <form onSubmit={handleAddCategory} className="space-y-4">
+              <div>
+                <label htmlFor="categoryName" className="block text-sm font-medium text-[#667538] mb-1">Category Name</label>
+                <input
+                  type="text"
+                  id="categoryName"
+                  className="w-full px-3 py-2 rounded-md bg-[#f9f5ed] border border-[#d9cbb2] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
+                  placeholder="e.g., Groceries"
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="categoryBudget" className="block text-sm font-medium text-[#667538] mb-1">Budget Amount</label>
+                <input
+                  type="number"
+                  id="categoryBudget"
+                  className="w-full px-3 py-2 rounded-md bg-[#f9f5ed] border border-[#d9cbb2] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
+                  placeholder="e.g., 500"
+                  value={newCategoryBudget}
+                  onChange={(e) => setNewCategoryBudget(e.target.value)}
+                  min="0"
+                  step="0.01"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full sm:w-auto py-2 px-4 bg-[#667538] text-white font-semibold rounded-md hover:bg-[#425951] focus:outline-none focus:ring-2 focus:ring-[#b7d3a8] focus:ring-offset-2 focus:ring-offset-white transition-colors"
+              >
+                Add Category
+              </button>
+            </form>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {categoriesData.map((category) => (
-            <div key={category.name} className="bg-white rounded-lg shadow-sm p-6 border border-[#d9cbb2] flex flex-col items-center justify-center">
-              <h2 className="text-2xl font-semibold text-[#667538] mb-2">{category.name}</h2>
-              <p className="text-3xl font-bold text-[#b88b5a]">${category.totalSpent.toFixed(2)}</p>
-            </div>
-          ))}
-        </div>
+          <div className="bg-white rounded-lg shadow-sm p-6 border border-[#d9cbb2]">
+            <h2 className="text-2xl font-semibold text-[#425951] mb-4">Your Categories</h2>
+            {categories.length === 0 ? (
+              <p className="text-[#667538]">No categories added yet.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-[#d9cbb2]">
+                  <thead className="bg-[#f9f5ed]">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Category Name</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Budget</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Spent</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Remaining</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-[#f9f5ed]">
+                    {categories.map((category) => (
+                      <tr key={category.id} className="hover:bg-[#fcfaf7] transition-colors duration-150">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#425951]">{category.name}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#667538]">${category.budget.toFixed(2)}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#b88b5a]">${category.spent.toFixed(2)}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <span className={`${(category.budget - category.spent) < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                            ${(category.budget - category.spent).toFixed(2)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <button
+                            onClick={() => handleDeleteCategory(category.id)}
+                            className="text-red-600 hover:text-red-900 focus:outline-none focus:underline"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </main>
       </div>
-    </div>
+    </>
   );
 };
 

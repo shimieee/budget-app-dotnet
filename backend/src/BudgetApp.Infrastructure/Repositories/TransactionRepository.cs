@@ -13,11 +13,11 @@ public class TransactionRepository : ITransactionRepository
     }
 
 // get all transactions for a specific user
-    public async Task<IEnumerable<Transaction>> GetByUserIdAsync(int userId)
+    public async Task<IEnumerable<Transaction>> GetByUserIdAsync(string userId)
     {
         return await _context.Transactions
-            .Where(t => t.UserId == userId)
-            .ToListAsync();
+                         .Where(t => t.UserId == userId)
+                         .ToListAsync();
     }
 // get a specific transaction by id
     public async Task<Transaction?> GetByIdAsync(int id)

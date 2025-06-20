@@ -9,7 +9,7 @@ using System.Text;
 using BudgetApp.Domain.Models;
 
 // load environment variables from .env file
-DotNetEnv.Env.Load("../../.env");
+DotNetEnv.Env.Load("../../../.env");
 
 // This is the main entry point for the ASP.NET Core application.
 var builder = WebApplication.CreateBuilder(args);

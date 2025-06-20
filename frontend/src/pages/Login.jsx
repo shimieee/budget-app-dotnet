@@ -1,22 +1,43 @@
 import React, { useState } from "react";
-import logo from "../assets/logo.png"; // Update path if needed
+import logo from "../assets/logo.png"; 
+import { Link } from "react-router-dom";
+import { loginUser } from "../api/auth"; // API call to login user
+import { useNavigate } from "react-router-dom"; // for navigation after login
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  // State variables for email, password, error messages, and success messages
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleLogin = (e) => {
+  // Function to handle login form submission
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Add your login logic here
     setError("");
-    setMessage("Login successful! (demo)");
-  };
+    setMessage("");
+  
+    try {
+      const data = await loginUser({ email, password });
+      localStorage.setItem("token", data.token);  // save token
+      setMessage("Login successful! Redirecting...");
+      // Redirect to dashboard after a short delay
+      setTimeout(() => {
+        navigate("/dashboard"); // navigate to dashboard
+      }, 1000);
 
+    } catch (error) {
+      setError(error.response?.data || "Login failed");
+    }
+  };
+  // Function to handle forgot password action
+  // will do later 
   const handleForgotPassword = () => {
-    setMessage("Password reset link sent! (demo)");
+    setMessage("Password reset link sent! (check console for dummy email)");
     setError("");
+    console.log(`Sending password reset to: ${email}`);
   };
 
   return (
@@ -37,7 +58,7 @@ const Login = () => {
               <input
                 id="email"
                 type="email"
-                className="w-full px-4 py-3 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
+                className="w-full px-4 py-3 rounded-lg bg-[#f9f5ed] border border-[#d9cbb2] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -51,7 +72,7 @@ const Login = () => {
               <input
                 id="password"
                 type="password"
-                className="w-full px-4 py-3 rounded-lg bg-[#F4EBD0] border border-[#b7d3a8] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
+                className="w-full px-4 py-3 rounded-lg bg-[#f9f5ed] border border-[#d9cbb2] text-[#425951] placeholder-[#b7d3a8] focus:outline-none focus:border-[#b88b5a] focus:ring-1 focus:ring-[#b88b5a]"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -88,9 +109,9 @@ const Login = () => {
 
             <div className="text-center text-sm text-[#667538]">
               Don't have an account?{" "}
-              <a href="/signup" className="text-[#b88b5a] hover:text-[#a07a4a]">
+              <Link to="/signup" className="text-[#b88b5a] hover:text-[#a07a4a]">
                 Sign up
-              </a>
+              </Link>
             </div>
           </form>
         </div>

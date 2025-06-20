@@ -7,9 +7,8 @@ public class Transaction
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
 
-    // Foreign Key
-    public int UserId { get; set; }
-    public User User { get; set; } = default!;
+    public string UserId { get; set; } = default!;  // Change to string
+    public AppUser User { get; set; } = default!;
 
     public int CategoryId { get; set; }
     public Category Category { get; set; } = default!;

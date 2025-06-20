@@ -4,10 +4,10 @@ public class Category
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
-
-    // Foreign Key
-    public int UserId { get; set; }
-    public User User { get; set; } = default!;
     public int Order { get; set; }
-    public List<Transaction> Transactions { get; set; } = [];
+
+    public string UserId { get; set; } = default!;  // Change to string
+    public AppUser User { get; set; } = default!;
+
+    public List<Transaction> Transactions { get; set; } = new();
 }

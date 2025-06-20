@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar"; // Import the new Sidebar component
+import Header from "../components/Header";
 
 const Dashboard = () => {
   const categories = [
@@ -26,66 +27,69 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-[#F4EBD0]">
-      {/* Sidebar */}
-      <Sidebar />
+    <>
+      <Header />
+      <div className="flex min-h-screen bg-[#F4EBD0]">
+        {/* Sidebar */}
+        <Sidebar />
 
-      {/* Main Dashboard View */}
-      <main className="flex-1 p-8 sm:p-10 lg:p-12 overflow-y-auto">
-        <h1 className="text-3xl sm:text-4xl font-bold text-[#425951] mb-8">Overview</h1>
+        {/* Main Dashboard View */}
+        <main className="flex-1 p-8 sm:p-10 lg:p-12 overflow-y-auto">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#425951] mb-8">Overview</h1>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <div className="bg-white rounded-lg shadow-sm p-6 text-center border border-[#d9cbb2]">
-            <h3 className="text-lg font-medium text-[#667538]">Total Balance</h3>
-            <p className="text-3xl font-bold text-[#425951]">${totalBalance.toFixed(2)}</p>
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div className="bg-white rounded-lg shadow-sm p-6 text-center border border-[#d9cbb2]">
+              <h3 className="text-lg font-medium text-[#667538]">Total Balance</h3>
+              <p className="text-3xl font-bold text-[#425951]">${totalBalance.toFixed(2)}</p>
+            </div>
+            <div className="bg-white rounded-lg shadow-sm p-6 text-center border border-[#d9cbb2]">
+              <h3 className="text-lg font-medium text-[#667538]">Total Income</h3>
+              <p className="text-3xl font-bold text-[#667538]">${totalIncome.toFixed(2)}</p>
+            </div>
+            <div className="bg-white rounded-lg shadow-sm p-6 text-center border border-[#d9cbb2]">
+              <h3 className="text-lg font-medium text-[#667538]">Total Expenses</h3>
+              <p className="text-3xl font-bold text-[#b88b5a]">${totalExpenses.toFixed(2)}</p>
+            </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm p-6 text-center border border-[#d9cbb2]">
-            <h3 className="text-lg font-medium text-[#667538]">Total Income</h3>
-            <p className="text-3xl font-bold text-[#667538]">${totalIncome.toFixed(2)}</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-6 text-center border border-[#d9cbb2]">
-            <h3 className="text-lg font-medium text-[#667538]">Total Expenses</h3>
-            <p className="text-3xl font-bold text-[#b88b5a]">${totalExpenses.toFixed(2)}</p>
-          </div>
-        </div>
 
-        {/* Spending by Category Graph (Placeholder) */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-10 border border-[#d9cbb2]">
-          <h2 className="text-2xl font-semibold text-[#425951] mb-4">Spending by Category</h2>
-          <div className="h-64 bg-[#f9f5ed] flex items-center justify-center text-[#667538] text-lg rounded-md border border-dashed border-[#b7d3a8]">
-            [Graph Placeholder]
+          {/* Spending by Category Graph (Placeholder) */}
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-10 border border-[#d9cbb2]">
+            <h2 className="text-2xl font-semibold text-[#425951] mb-4">Spending by Category</h2>
+            <div className="h-64 bg-[#f9f5ed] flex items-center justify-center text-[#667538] text-lg rounded-md border border-dashed border-[#b7d3a8]">
+              [Graph Placeholder]
+            </div>
           </div>
-        </div>
 
-        {/* Recent Transactions Table */}
-        <div className="bg-white rounded-lg shadow-sm p-6 border border-[#d9cbb2]">
-          <h2 className="text-2xl font-semibold text-[#425951] mb-4">Recent Transactions</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-[#d9cbb2]">
-              <thead className="bg-[#f9f5ed]">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Date</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Description</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Category</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Amount</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-[#f9f5ed]">
-                {recentTransactions.map((transaction) => (
-                  <tr key={transaction.id} className="hover:bg-[#fcfaf7] transition-colors duration-150">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#425951]">{transaction.date}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#425951]">{transaction.description}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[#667538]">{transaction.category}</td>
-                    <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${transaction.type === 'Income' ? 'text-green-600' : 'text-[#b88b5a]'}`}>{transaction.amount.toFixed(2)}</td>
+          {/* Recent Transactions Table */}
+          <div className="bg-white rounded-lg shadow-sm p-6 border border-[#d9cbb2]">
+            <h2 className="text-2xl font-semibold text-[#425951] mb-4">Recent Transactions</h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-[#d9cbb2]">
+                <thead className="bg-[#f9f5ed]">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Date</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Description</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Category</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[#667538] uppercase tracking-wider">Amount</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="bg-white divide-y divide-[#f9f5ed]">
+                  {recentTransactions.map((transaction) => (
+                    <tr key={transaction.id} className="hover:bg-[#fcfaf7] transition-colors duration-150">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#425951]">{transaction.date}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#425951]">{transaction.description}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-[#667538]">{transaction.category}</td>
+                      <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${transaction.type === 'Income' ? 'text-green-600' : 'text-[#b88b5a]'}`}>{transaction.amount.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 };
 

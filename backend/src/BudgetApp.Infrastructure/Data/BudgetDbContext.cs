@@ -1,25 +1,30 @@
 using Microsoft.EntityFrameworkCore;
-using BudgetApp.Domain.Models; 
+using BudgetApp.Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 //maps models to database tables
-public class BudgetDbContext : DbContext
+public class BudgetDbContext : IdentityDbContext<AppUser>
 {
     public BudgetDbContext(DbContextOptions<BudgetDbContext> options)
-        : base(options)
-    {
-            
-         }
+        : base(options) { }
 
-
-    // DbSets for each model
-    public DbSet<User> Users => Set<User>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<Category> Categories => Set<Category>();
 
-    // Optional: Override OnConfiguring if you need to set up the database connection
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        // Fluent API config if needed
-        base.OnModelCreating(modelBuilder);
-    }
+{
+    base.OnModelCreating(modelBuilder);
+
+    modelBuilder.Entity<Category>()
+        .HasOne(c => c.User)
+        .WithMany()
+        .HasForeignKey(c => c.UserId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+    modelBuilder.Entity<Transaction>()
+        .HasOne(t => t.User)
+        .WithMany()
+        .HasForeignKey(t => t.UserId)
+        .OnDelete(DeleteBehavior.Cascade);
 }
-// 
+}

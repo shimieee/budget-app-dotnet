@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using BudgetApp.Application.Interfaces;
 using BudgetApp.Domain.Models;
-
+using Microsoft.AspNetCore.Authorization;
 namespace BudgetApp.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 

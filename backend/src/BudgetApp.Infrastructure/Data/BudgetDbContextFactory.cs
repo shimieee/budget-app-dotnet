@@ -11,13 +11,16 @@ namespace BudgetApp.Infrastructure
             var optionsBuilder = new DbContextOptionsBuilder<BudgetDbContext>();
 
             // Load environment variables
-            DotNetEnv.Env.Load("../../.env");
+            DotNetEnv.Env.Load("../../../.env");
+
+            // Build the connection string using environment variables
 
             var connectionString = $"Host={Environment.GetEnvironmentVariable("DB_HOST")};" +
                        $"Port={Environment.GetEnvironmentVariable("DB_PORT") ?? "5432"};" +
                        $"Database={Environment.GetEnvironmentVariable("DB_NAME")};" +
                        $"Username={Environment.GetEnvironmentVariable("DB_USER")};" +
                        $"Password={Environment.GetEnvironmentVariable("DB_PASS")}";
+
             // Use Npgsql for PostgreSQL
             optionsBuilder.UseNpgsql(connectionString);
             return new BudgetDbContext(optionsBuilder.Options);

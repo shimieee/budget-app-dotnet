@@ -1,10 +1,12 @@
 import React from "react";
 import { CloudArrowUpIcon, LockClosedIcon, ServerIcon, BookOpenIcon } from "@heroicons/react/20/solid";
-// Removed: import Header from "../components/Header"; // Header is rendered globally in App.jsx
+import Header from "../components/Header"; // Import Header
 import { Link } from "react-router-dom";
 // import Screenshot from "../assets/screenshot.png"; // Uncomment and use your actual screenshot if available
 
 const LandingPage = () => (
+    <>
+    <Header />
     <div className="relative isolate overflow-hidden px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0 bg-[#F4EBD0]">
     {/* Content */}
     <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-2 lg:items-start lg:gap-y-10">
@@ -21,7 +23,7 @@ const LandingPage = () => (
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <Link
               to="/signup"
-              className="inline-flex items-center justify-center rounded-md bg-[#b88b5a] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#a07a4a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b88b5a]"
+              className="inline-flex items-center justify-center rounded-md bg-[#b88b5a] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#a07a4a] focus-visible:outline focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#2b2b2b] focus-visible:outline-offset-2 focus-visible:outline-[#b88b5a]"
             >
               Get Started
               <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,7 +32,7 @@ const LandingPage = () => (
             </Link>
             <Link
               to="/about"
-              className="inline-flex items-center justify-center rounded-md bg-[#b7d3a8] px-4 py-2.5 text-sm font-semibold text-[#425951] shadow-sm hover:bg-[#a7c398] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b7d3a8]"
+              className="inline-flex items-center justify-center rounded-md bg-[#b7d3a8] px-4 py-2.5 text-sm font-semibold text-[#425951] shadow-sm hover:bg-[#a7c398] focus-visible:outline focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#2b2b2b] focus-visible:outline-offset-2 focus:focus-visible:outline-[#b7d3a8]"
             >
               Learn More
               <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,6 +85,7 @@ const LandingPage = () => (
       </div>
     </div>
   </div>
+  </>
 );
 
 export default LandingPage;

@@ -2,6 +2,7 @@ import React from "react";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 
+
 const Header = () => (
   <header className="flex items-center justify-between px-3 py-2 bg-[#F4EBD0] ">
     <div className="flex items-center gap-2">
@@ -10,7 +11,7 @@ const Header = () => (
     <nav className="flex-1 flex justify-center gap-6 text-xl">
       <a href="#doc" className="text-[#667538] hover:text-green-700 transition">doc.</a>
       <a href="#contact" className="text-[#667538] hover:text-green-700 transition">contact.</a>
-      <a href="#about" className="text-[#667538] hover:text-green-700 transition">about.</a>
+      <Link to="/about" className="text-[#667538] hover:text-green-700 transition">about.</Link>
     </nav>
     {/* Buttons */}
     <div className="flex items-center gap-2 pr-6">

@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import Categories from './pages/Categories';
 import Transactions from './pages/Transactions';
+import NotFound from './pages/NotFound';
 import LoadingScreen from './components/LoadingScreen';
+import Footer from './components/Footer';
+import About from './pages/About';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -21,7 +23,6 @@ function App() {
 
   return (
     <Router>
-      <Header />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
@@ -29,7 +30,10 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/transactions" element={<Transactions />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/about" element={<About/>}/>
       </Routes>
+      <Footer />
     </Router>
   );
 }
