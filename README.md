@@ -40,7 +40,7 @@ This project demonstrates core skills in API development, database management, a
 2. Set up the `.env` file with your database and JWT secret keys
 3. Run migrations from the Infrastructure project to create/update the database
 4. Launch backend API with `dotnet run`
-5. Launch frontend React app with `npm start`
+5. Launch frontend React+Vite app with `npm run dev`
 6. Register a new user and explore the budgeting functionalities
 
 ---
