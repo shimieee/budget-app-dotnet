@@ -1,21 +1,25 @@
-import api from './index';
+import axios from './index';
 
-// GET categories by user ID
-export const fetchCategories = (userId) =>
-  api.get(`/categories/user/${userId}`);
+// Get all categories for the logged-in user
+export const fetchCategories = async () => {
+  const response = await axios.get("/category");
+  return response.data;
+};
 
-// GET category by ID
-export const fetchCategoryById = (id) =>
-  api.get(`/categories/${id}`);
+// Add a new category
+export const createCategory = async (category) => {
+  const response = await axios.post("/category", category);
+  return response.data;
+};
 
-// CREATE a new category
-export const addCategory = (category) =>
-  api.post('/categories', category);
+// Update a category by ID
+export const updateCategory = async (id, category) => {
+  const response = await axios.put(`/category/${id}`, category);
+  return response.data;
+};
 
-// UPDATE an existing category
-export const updateCategory = (id, category) =>
-  api.put(`/categories/${id}`, category);
-
-// DELETE a category
-export const deleteCategory = (id) =>
-  api.delete(`/categories/${id}`);
+// Delete a category by ID
+export const deleteCategory = async (id) => {
+  const response = await axios.delete(`/category/${id}`);
+  return response.data;
+};

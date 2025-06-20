@@ -1,17 +1,22 @@
-import api from './index';
+// API calls for transaction management
+import axios from "./index";
 
-// GET all transactions for a user
-export const fetchTransactions = (userId) =>
-  api.get(`/transactions/user/${userId}`);
+export const getTransactions = async () => {
+  const response = await axios.get("/transaction");
+  return response.data;
+};
 
-// POST a new transaction
-export const addTransaction = (transaction) =>
-  api.post('/transactions', transaction);
+export const createTransaction = async (transaction) => {
+  const response = await axios.post("/transaction", transaction);
+  return response.data;
+};
 
-// PUT to update a transaction
-export const updateTransaction = (id, transaction) =>
-  api.put(`/transactions/${id}`, transaction);
+export const deleteTransaction = async (id) => {
+  const response = await axios.delete(`/transaction/${id}`);
+  return response.data;
+};
 
-// DELETE a transaction
-export const deleteTransaction = (id) =>
-  api.delete(`/transactions/${id}`);
+export const updateTransaction = async (id, transaction) => {
+  const response = await axios.put(`/transaction/${id}`, transaction);
+  return response.data;
+};

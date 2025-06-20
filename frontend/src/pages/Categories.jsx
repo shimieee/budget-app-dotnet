@@ -1,35 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
+import {
+  fetchCategories,
+  createCategory,
+  deleteCategory,
+} from "../api/categories";
 
 const Categories = () => {
-  const [categories, setCategories] = useState([
-    { id: 1, name: "Food", budget: 500, spent: 300 },
-    { id: 2, name: "Transport", budget: 200, spent: 150 },
-    { id: 3, name: "Housing", budget: 1200, spent: 1100 },
-    { id: 4, name: "Utilities", budget: 150, spent: 100 },
-    { id: 5, name: "Entertainment", budget: 300, spent: 250 },
-  ]);
+  const [categories, setCategories] = useState([]);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [newCategoryBudget, setNewCategoryBudget] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const handleAddCategory = (e) => {
+  useEffect(() => {
+    const loadCategories = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchCategories();
+        setCategories(data);
+      } catch (error) {
+        setError("Failed to load categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadCategories();
+  }, []);
+
+  const handleAddCategory = async (e) => {
     e.preventDefault();
     if (newCategoryName.trim() === "" || newCategoryBudget.trim() === "") return;
-
-    const newCategory = {
-      id: categories.length + 1,
-      name: newCategoryName,
-      budget: parseFloat(newCategoryBudget),
-      spent: 0, // New categories start with 0 spent
-    };
-    setCategories([...categories, newCategory]);
-    setNewCategoryName("");
-    setNewCategoryBudget("");
+    try {
+      const newCategory = {
+        name: newCategoryName,
+        budget: parseFloat(newCategoryBudget),
+      };
+      const created = await createCategory(newCategory);
+      setCategories([...categories, created]);
+      setNewCategoryName("");
+      setNewCategoryBudget("");
+    } catch (error) {
+      setError("Failed to add category");
+    }
   };
 
-  const handleDeleteCategory = (id) => {
-    setCategories(categories.filter((category) => category.id !== id));
+  const handleDeleteCategory = async (id) => {
+    try {
+      await deleteCategory(id);
+      setCategories(categories.filter((category) => category.id !== id));
+    } catch (error) {
+      setError("Failed to delete category");
+    }
   };
 
   return (
@@ -76,11 +99,14 @@ const Categories = () => {
                 Add Category
               </button>
             </form>
+            {error && <div className="text-red-600 mt-2">{error}</div>}
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6 border border-[#d9cbb2]">
             <h2 className="text-2xl font-semibold text-[#425951] mb-4">Your Categories</h2>
-            {categories.length === 0 ? (
+            {loading ? (
+              <p className="text-[#667538]">Loading...</p>
+            ) : categories.length === 0 ? (
               <p className="text-[#667538]">No categories added yet.</p>
             ) : (
               <div className="overflow-x-auto">
@@ -98,11 +124,11 @@ const Categories = () => {
                     {categories.map((category) => (
                       <tr key={category.id} className="hover:bg-[#fcfaf7] transition-colors duration-150">
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-[#425951]">{category.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#667538]">${category.budget.toFixed(2)}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#b88b5a]">${category.spent.toFixed(2)}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#667538]">${category.budget?.toFixed(2) ?? "0.00"}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[#b88b5a]">${category.spent?.toFixed(2) ?? "0.00"}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <span className={`${(category.budget - category.spent) < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                            ${(category.budget - category.spent).toFixed(2)}
+                            ${(category.budget - category.spent)?.toFixed(2) ?? "0.00"}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
