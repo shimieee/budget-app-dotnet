@@ -36,8 +36,20 @@ public class TransactionRepository : ITransactionRepository
     // update an existing transaction
     public async Task UpdateAsync(Transaction transaction)
     {
-        _context.Transactions.Update(transaction);
-        await _context.SaveChangesAsync(); 
+         var existingTransaction = await _context.Transactions.FindAsync(transaction.Id);
+        if (existingTransaction != null)
+        {
+            existingTransaction.Title = transaction.Title;
+            existingTransaction.Amount = transaction.Amount;
+            existingTransaction.Date = transaction.Date;
+            existingTransaction.CategoryId = transaction.CategoryId;
+            existingTransaction.Type = transaction.Type; // Update TransactionType
+            existingTransaction.Notes = transaction.Notes; // Update Notes
+            existingTransaction.ReceiptImageUrl = transaction.ReceiptImageUrl; // Update ReceiptImageUrl
+
+            _context.Transactions.Update(existingTransaction);
+            await _context.SaveChangesAsync();
+        }
     }
     // delete a transaction
     public async Task DeleteAsync(Transaction transaction)

@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// This file sets up an Axios instance for making API requests
 const API_URL = 'http://localhost:5221/api';
 
 const axiosInstance = axios.create({

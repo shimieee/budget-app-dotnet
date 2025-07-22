@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../assets/logo.png"; // Update path if needed
+import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom"; // for navigation after sign up
 import { registerUser } from "../api/auth";
 import Header from "../components/Header";

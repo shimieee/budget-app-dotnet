@@ -6,6 +6,7 @@ import { fetchCategories } from "../api/categories";
 import { getTransactions } from "../api/transactions";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
+// Define colors for the bar chart
 const COLORS = ["#b88b5a", "#b7d3a8", "#667538", "#425951", "#e9e5d6", "#a07a4a", "#3b7a57", "#b7a16a"];
 
 const Dashboard = () => {
