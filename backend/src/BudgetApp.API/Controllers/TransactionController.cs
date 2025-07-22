@@ -52,7 +52,19 @@ public class TransactionController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Transaction transaction)
     {
-        // Validate the transaction
+        // Validate the transaction amount
+         if (transaction.Amount <= 0)
+        {
+            return BadRequest("Transaction amount must be greater than zero.");
+        }
+        
+        // Validate the transaction type (ensure it's either Income or Expense)
+        if (!Enum.IsDefined(typeof(TransactionType), transaction.Type))
+        {
+            return BadRequest("Invalid transaction type. It must be either 'Income' or 'Expense'.");
+        }    
+
+        // get the user ID from the claims
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         // Check if the transaction has a valid amount and title
         if (string.IsNullOrEmpty(userId))
