@@ -46,14 +46,17 @@ public class AuthController : ControllerBase
 
         // Create the user with the provided password
         var result = await _userManager.CreateAsync(user, request.Password);
-
+        
         // If the user creation failed, return the errors
         if (!result.Succeeded)
         {
             var errors = result.Errors.Select(e => e.Description);
             return BadRequest(new { Errors = errors });
         }
-        return Ok("User registered successfully.");
+        // Generate JWT token for the newly registered user
+        var token = GenerateJwtToken(user);
+
+        return Ok(new { Token = token });
     
     }
 

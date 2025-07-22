@@ -76,7 +76,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // Use static files for serving Swagger UI and other static content
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+app.UseRouting();
 
 // Enable CORS for all origins, headers, and methods
 app.UseCors(options =>
