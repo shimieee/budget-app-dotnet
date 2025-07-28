@@ -52,12 +52,7 @@ public class TransactionController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Transaction transaction)
     {
-        // Validate the transaction amount
-         if (transaction.Amount <= 0)
-        {
-            return BadRequest("Transaction amount must be greater than zero.");
-        }
-        
+    
         // Validate the transaction type (ensure it's either Income or Expense)
         if (!Enum.IsDefined(typeof(TransactionType), transaction.Type))
         {
