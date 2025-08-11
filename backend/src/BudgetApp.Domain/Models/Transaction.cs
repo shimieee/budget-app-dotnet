@@ -7,6 +7,16 @@ public enum TransactionType
     Income,
     Expense
 }
+
+public enum RecurrenceInterval
+{
+    Daily,
+    Weekly,
+    Monthly,
+    Yearly
+}
+
+
 public class Transaction
 {
     public int Id { get; set; }
@@ -33,5 +43,10 @@ public class Transaction
 
     // Enum to indicate whether the transaction is income or expense
     public TransactionType Type { get; set; }
+
+    //  properties for recurring transactions
+    public bool IsRecurring { get; set; } // Indicates if the transaction is recurring
+    public RecurrenceInterval? RecurrenceInterval { get; set; } // Frequency of recurrence
+    public DateTime? RecurrenceEndDate { get; set; } // Optional end date for recurrence
 
 }

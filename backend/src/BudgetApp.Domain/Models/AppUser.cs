@@ -7,6 +7,7 @@ namespace BudgetApp.Domain.Models
         // Additional properties for the user
         public required string FullName { get; set; }
         public string? ProfilePictureUrl { get; set; }
+        public string? Bio { get; set; }
         
     }
 }
