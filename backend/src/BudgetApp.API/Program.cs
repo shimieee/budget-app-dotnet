@@ -64,7 +64,6 @@ builder.Services.AddControllers();
 // Register application services
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.WebHost.UseUrls("http://+:10000");
 
 // Register the application services
 var app = builder.Build();
@@ -87,6 +86,8 @@ app.UseCors(options =>
 // for JWT
 app.UseAuthentication();
 app.UseAuthorization();
+// Enable static files middleware to serve static files
+app.UseStaticFiles(); 
 
 app.MapControllers();
 

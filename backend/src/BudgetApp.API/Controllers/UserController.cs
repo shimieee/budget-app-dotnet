@@ -53,12 +53,13 @@ public class UserController : ControllerBase
         if (user == null) return NotFound();
 
         return Ok(new
-            {
-                user.Id,
-                user.UserName,
-                user.Email,
-                user.FullName,
-                user.ProfilePictureUrl
+        {
+            user.Id,
+            user.UserName,
+            user.Email,
+            user.FullName,
+            user.ProfilePictureUrl,
+            user.Bio
             });
         }
 
@@ -84,6 +85,9 @@ public class UserController : ControllerBase
 
         if (!string.IsNullOrWhiteSpace(updatedUser.ProfilePictureUrl))
                 user.ProfilePictureUrl = updatedUser.ProfilePictureUrl;
+
+        if (!string.IsNullOrWhiteSpace(updatedUser.Bio))
+                user.Bio = updatedUser.Bio;
 
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded)

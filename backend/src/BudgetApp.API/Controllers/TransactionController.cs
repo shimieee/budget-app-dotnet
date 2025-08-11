@@ -114,6 +114,6 @@ public class TransactionController : ControllerBase
         if (transaction == null) return NotFound();
         // Delete the transaction
         await _transactionRepository.DeleteAsync(transaction);
-        return NoContent();
+        return Ok(id);
     }
 }
