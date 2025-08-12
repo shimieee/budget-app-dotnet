@@ -99,6 +99,12 @@ public class TransactionController : ControllerBase
         existing.Date = transaction.Date;
         existing.CategoryId = transaction.CategoryId;
         existing.UserId = userId!;
+        existing.Notes = transaction.Notes;
+        existing.ReceiptImageUrl = transaction.ReceiptImageUrl;
+        existing.Type = transaction.Type;
+        existing.IsRecurring = transaction.IsRecurring;
+        existing.RecurrenceInterval = transaction.RecurrenceInterval;
+        existing.RecurrenceEndDate = transaction.RecurrenceEndDate;
         
         // Update the transaction in the repository
         await _transactionRepository.UpdateAsync(existing);

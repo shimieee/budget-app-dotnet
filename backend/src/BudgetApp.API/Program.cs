@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using DotNetEnv;
 using System.Text;
 using BudgetApp.Domain.Models;
+using BudgetApp.Infrastructure.BackgroundServices;
 
 // load environment variables from .env file
 DotNetEnv.Env.Load("../../../.env");
@@ -64,7 +65,7 @@ builder.Services.AddControllers();
 // Register application services
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-
+builder.Services.AddHostedService<RecurringExpenseNotifier>();
 // Register the application services
 var app = builder.Build();
 

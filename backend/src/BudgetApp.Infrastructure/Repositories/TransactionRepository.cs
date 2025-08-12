@@ -46,7 +46,10 @@ public class TransactionRepository : ITransactionRepository
             existingTransaction.Type = transaction.Type; // Update TransactionType
             existingTransaction.Notes = transaction.Notes; // Update Notes
             existingTransaction.ReceiptImageUrl = transaction.ReceiptImageUrl; // Update ReceiptImageUrl
-
+            existingTransaction.IsRecurring = transaction.IsRecurring; // Update IsRecurring
+            existingTransaction.RecurrenceInterval = transaction.RecurrenceInterval; // Update RecurrenceInterval
+            existingTransaction.RecurrenceEndDate = transaction.RecurrenceEndDate; // Update RecurrenceEndDate
+            
             _context.Transactions.Update(existingTransaction);
             await _context.SaveChangesAsync();
         }
