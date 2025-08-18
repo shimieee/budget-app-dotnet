@@ -77,8 +77,16 @@ public class UserController : ControllerBase
         if (!string.IsNullOrWhiteSpace(updatedUser.UserName))
                 user.UserName = updatedUser.UserName;
 
-        if (!string.IsNullOrWhiteSpace(updatedUser.Email))
-                user.Email = updatedUser.Email;
+       if (!string.IsNullOrWhiteSpace(updatedUser.Email))
+    {
+        // Check if the email is already used by another user
+        var existingUser = await _userManager.FindByEmailAsync(updatedUser.Email);
+        if (existingUser != null && existingUser.Id != user.Id)
+        {
+            return Conflict(new { message = "Email is already taken" });
+        }
+        user.Email = updatedUser.Email;
+    }
 
         if (!string.IsNullOrWhiteSpace(updatedUser.FullName))
                 user.FullName = updatedUser.FullName;
