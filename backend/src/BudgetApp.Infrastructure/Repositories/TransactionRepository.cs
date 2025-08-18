@@ -3,6 +3,7 @@ using BudgetApp.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetApp.Infrastructure.Repositories;
+
 public class TransactionRepository : ITransactionRepository
 {
     // Repository for managing transactions in the budget application
@@ -36,7 +37,7 @@ public class TransactionRepository : ITransactionRepository
     // update an existing transaction
     public async Task UpdateAsync(Transaction transaction)
     {
-         var existingTransaction = await _context.Transactions.FindAsync(transaction.Id);
+        var existingTransaction = await _context.Transactions.FindAsync(transaction.Id);
         if (existingTransaction != null)
         {
             existingTransaction.Title = transaction.Title;
@@ -49,7 +50,7 @@ public class TransactionRepository : ITransactionRepository
             existingTransaction.IsRecurring = transaction.IsRecurring; // Update IsRecurring
             existingTransaction.RecurrenceInterval = transaction.RecurrenceInterval; // Update RecurrenceInterval
             existingTransaction.RecurrenceEndDate = transaction.RecurrenceEndDate; // Update RecurrenceEndDate
-            
+
             _context.Transactions.Update(existingTransaction);
             await _context.SaveChangesAsync();
         }
@@ -64,5 +65,10 @@ public class TransactionRepository : ITransactionRepository
     public async Task SaveChangesAsync()
     {
         await _context.SaveChangesAsync();
+    }
+    public async Task<bool> ExistsForCategoryAsync(int categoryId)
+    {
+        return await _context.Transactions
+            .AnyAsync(t => t.CategoryId == categoryId);
     }
 }

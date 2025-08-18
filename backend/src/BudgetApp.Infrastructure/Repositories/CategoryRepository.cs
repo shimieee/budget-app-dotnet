@@ -36,19 +36,25 @@ public class CategoryRepository : ICategoryRepository
     public async Task AddAsync(Category category)
     {
         await _context.Categories.AddAsync(category);
-        await _context.SaveChangesAsync(); 
+        await _context.SaveChangesAsync();
 
     }
 
     public async Task UpdateAsync(Category category)
     {
         _context.Categories.Update(category);
-        await _context.SaveChangesAsync(); 
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Category category)
     {
         _context.Categories.Remove(category);
         await _context.SaveChangesAsync(); // Save changes after delete
+    }
+    
+     public async Task<bool> ExistsAsync(string userId, string name)
+    {
+        return await _context.Categories
+            .AnyAsync(c => c.UserId == userId && c.Name == name);
     }
 }

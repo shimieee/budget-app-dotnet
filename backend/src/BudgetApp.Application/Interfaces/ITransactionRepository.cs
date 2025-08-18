@@ -9,6 +9,8 @@ public interface ITransactionRepository
     Task AddAsync(Transaction transaction);
     Task UpdateAsync(Transaction transaction);
     Task DeleteAsync(Transaction transaction);
+    Task<bool> ExistsForCategoryAsync(int categoryId); 
+
     Task SaveChangesAsync(); 
 
 }

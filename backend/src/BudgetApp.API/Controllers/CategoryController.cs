@@ -14,10 +14,13 @@ public class CategoryController : ControllerBase
 {
     // Repository for category operations
     private readonly ICategoryRepository _categoryRepository;
+    private readonly ITransactionRepository _transactionRepository;
 
-    public CategoryController(ICategoryRepository categoryRepository)
+    public CategoryController(ICategoryRepository categoryRepository, ITransactionRepository transactionRepository)
     {
+
         _categoryRepository = categoryRepository;
+        _transactionRepository = transactionRepository;
     }
 
     // Endpoints for category management
@@ -46,6 +49,7 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> AddCategory([FromBody] Category category)
     {
         // Validate the category
+        
         if (string.IsNullOrWhiteSpace(category.Name))
             return BadRequest("Category name is required.");
         // Check if the budget amount is valid
@@ -53,6 +57,12 @@ public class CategoryController : ControllerBase
         if (userId == null)
             return BadRequest("User ID is required.");
         // Set the user ID and created date for the category
+        // Check for duplicate category name for this user
+        bool exists = await _categoryRepository.ExistsAsync(userId, category.Name);
+        if (exists)
+            return Conflict(new { message = "You already have a category with this name." });
+
+
         category.UserId = userId!;
         category.CreatedDate = DateTime.UtcNow;
         // Add the category to the repository
@@ -78,14 +88,20 @@ public class CategoryController : ControllerBase
 
     // Endpoint to delete a category by ID
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCategory(int id)
+public async Task<IActionResult> DeleteCategory(int id)
+{
+    var category = await _categoryRepository.GetByIdAsync(id);
+    if (category == null) return NotFound();
+
+    // Check if category has associated transactions
+    bool hasTransactions = await _transactionRepository.ExistsForCategoryAsync(id);
+    if (hasTransactions)
     {
-        // Check if the category exists
-        var category = await _categoryRepository.GetByIdAsync(id);
-        if (category == null) return NotFound();
-        
-        // Delete the category
-        await _categoryRepository.DeleteAsync(category);
-        return NoContent();
+        return Conflict(new { message = "Cannot delete category with associated transactions." });
     }
+
+    // Delete the category
+    await _categoryRepository.DeleteAsync(category);
+    return NoContent();
+}
 }
